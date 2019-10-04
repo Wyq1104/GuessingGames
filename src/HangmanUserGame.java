@@ -53,17 +53,7 @@ public class HangmanUserGame extends Hangman {
             System.out.println("No more games, thank you for your support.");
             return false;
         }
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Do you want to play one more game?");
-        System.out.println("Yes: enter Y. No: enter anything else.");
-        String response=scanner.nextLine();
-        if(response.length()==1 && (response.charAt(0)=='Y' || response.charAt(0)=='y')){
-            System.out.println("Ok, let's go.");
-            return true;
-        }else {
-            System.out.println("I'm sorry to hear that. See you next time");
-            return false;
-        }
+        return super.playNext();
     }
 
     /**

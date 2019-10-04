@@ -13,14 +13,12 @@ public abstract class Hangman extends GuessingGame {
     List<String> phraseList;
     List<String > changeablePhraseList;
     StringBuilder hiddenPhrase;
-    public static int TOTALCHANCES=15;
+    public static final int TOTALCHANCES=15;
     String previousGuesses="";
 
     @Override
     public abstract GameInstance play();
 
-    @Override
-    public abstract boolean playNext();
 
     /**
      * get a list of phrases from the file
