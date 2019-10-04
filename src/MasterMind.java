@@ -2,7 +2,7 @@ import java.util.*;
 
 public class MasterMind extends GuessingGame{
     public static final int CODESIZE=4;
-    public static final int TOTALCHANCES=8;
+    public static final int TOTALCHANCES=10;
     private String secret="";
     public static final char[] colorChars=new char[]{'R','G','B','Y','O','P'};
     private Set<Character> characters=new HashSet(Arrays.asList(colorChars));
