@@ -2,6 +2,10 @@ import java.util.Scanner;
 
 public abstract class GuessingGame extends Game{
 
+    /**
+     * reusable code for MasterMind and HangmanUserPlayer
+     * @return
+     */
     @Override
     public boolean playNext() {
         Scanner scanner=new Scanner(System.in);

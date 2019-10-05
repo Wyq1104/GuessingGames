@@ -8,8 +8,6 @@ public class MasterMind extends GuessingGame{
     private Set<Character> characters=new HashSet(Arrays.asList(colorChars));
     private String previousGuesses;
 
-
-
     private void generateSecret(){
         String str="";
         Random random=new Random();

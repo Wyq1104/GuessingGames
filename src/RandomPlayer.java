@@ -2,20 +2,35 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class RandomPlayer implements HangmanPlayer{
+/**
+ * a player that guess character randomly
+ */
+public class RandomPlayer implements HangmanPlayer {
     static  int playerNum=1;
     private String Id="RandomPlayer"+playerNum;
     private String alphabets="abcdefghijklmnopqrstuvwxyz";
     private Set<Integer> guessedIndexes=new HashSet<>();
 
+    /**
+     * constructor that increases playerNum
+     */
     public RandomPlayer(){
         playerNum++;
     }
+
+    /**
+     * get player's Id
+     * @return
+     */
     @Override
     public String getId() {
         return Id;
     }
 
+    /**
+     * get player's next guess
+     * @return
+     */
     @Override
     public char nextGuess() {
         Random random=new Random();
@@ -29,6 +44,10 @@ public class RandomPlayer implements HangmanPlayer{
         return guess;
     }
 
+    /**
+     * reset player for a new game
+     * @return
+     */
     @Override
     public boolean reset() {
         guessedIndexes.clear();

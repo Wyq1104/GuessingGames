@@ -9,16 +9,27 @@ import java.util.Random;
  *Provide methods used by a concrete hangman game
  */
 public abstract class Hangman extends GuessingGame {
-    String phrase;
-    List<String> phraseList;
-    List<String > changeablePhraseList;
-    StringBuilder hiddenPhrase;
-    public static final int TOTALCHANCES=15;
-    String previousGuesses="";
+    protected String phrase;
+    protected List<String> phraseList;
+    protected List<String > changeablePhraseList;
+    protected StringBuilder hiddenPhrase;
+    public static int TOTALCHANCES=15;
+    protected String previousGuesses="";
 
+    /**
+     * change the changeablephraselist which removes guessed phrases
+     * @param phraseList
+     */
+    public void setChangeablePhraseList(List<String> phraseList) {
+        this.changeablePhraseList = new ArrayList<>(phraseList);
+    }
+
+    /**
+     * play a game
+     * @return gameinstance
+     */
     @Override
     public abstract GameInstance play();
-
 
     /**
      * get a list of phrases from the file
@@ -27,7 +38,7 @@ public abstract class Hangman extends GuessingGame {
     public void readPhrases(String filename){
         try{
             phraseList= Files.readAllLines(Paths.get(filename));
-            changeablePhraseList=new ArrayList<>(phraseList);
+            setChangeablePhraseList(phraseList);
         }catch (IOException e){
             System.out.println(e);
         }
@@ -97,4 +108,33 @@ public abstract class Hangman extends GuessingGame {
      * @return
      */
     abstract char getGuess(String previousGuesses);
+
+    /**
+     *
+     * @return a phraseList read from file
+     */
+    @Override
+    public String toString() {
+        return phraseList.toString();
+    }
+
+    /**
+     *
+     * @param obj
+     * @return if this and other are both hangman and their phraseList are the same
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(this==obj){
+            return true;
+        }
+        if(obj==null || obj.getClass()!= Hangman.class){
+            return false;
+        }
+        Hangman other=(Hangman)obj;
+        if(phraseList.equals(other.phraseList)){
+            return true;
+        }
+        return false;
+    }
 }

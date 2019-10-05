@@ -1,10 +1,17 @@
-
+import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Hangman game for human user to play
+ */
 public class HangmanUserGame extends Hangman {
+    /**
+     * constructor that read phrases from file
+     */
     HangmanUserGame(){
         readPhrases("test.txt");
     }
+
     /**
      * play a game
      * @return a GameInstance
@@ -49,7 +56,7 @@ public class HangmanUserGame extends Hangman {
      */
     @Override
     public boolean playNext() {
-        if(changeablePhraseList.size()==0) {
+        if(phraseList.size()==0) {
             System.out.println("No more games, thank you for your support.");
             return false;
         }
@@ -82,9 +89,47 @@ public class HangmanUserGame extends Hangman {
         return guess;
     }
 
+    /**
+     *
+     * @return a phraseList read from file
+     */
+    @Override
+    public String toString() {
+        return phraseList.toString();
+    }
+
+    /**
+     *
+     * @param obj
+     * @return if this and other are both hangmanusergame and their phraseList are the same
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(this==obj){
+            return true;
+        }
+        if(obj==null || obj.getClass()!= HangmanUserGame.class){
+            return false;
+        }
+        HangmanUserGame other=(HangmanUserGame) obj;
+        if(phraseList.equals(other.phraseList)){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * run the game and give feedbacks
+     * @param args
+     */
     public static void main(String[] args) {
         HangmanUserGame hangmanUserGame = new HangmanUserGame();
         GamesRecord record = hangmanUserGame.playAll();
         System.out.println(record);
+        List highGameList=record.highGameList(2);
+        System.out.println("High Game List:\n"+highGameList);
+        float average=record.average();
+        System.out.println("Average Score: "+average);
     }
 }

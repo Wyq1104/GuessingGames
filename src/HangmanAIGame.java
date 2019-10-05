@@ -1,6 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+/**
+ * Hangman game for AI user to play
+ */
 public class HangmanAIGame extends Hangman {
     private List<HangmanPlayer> hangmanPlayers=new ArrayList<>();
     private HangmanPlayer hangmanPlayer;
@@ -33,6 +38,10 @@ public class HangmanAIGame extends Hangman {
         readPhrases("phrases.txt");
     }
 
+    /**
+     * play a game
+     * @return a gameinstance
+     */
     @Override
     public GameInstance play() {
         GameInstance gameInstance=new GameInstance();
@@ -68,10 +77,14 @@ public class HangmanAIGame extends Hangman {
         return gameInstance;
     }
 
+    /**
+     * check if there still exists AI player to play the game
+     * @return
+     */
     @Override
     public boolean playNext() {
         if(changeablePhraseList.size()==0){
-            changeablePhraseList=phraseList;
+            setChangeablePhraseList(phraseList);
             hangmanPlayer=null;
             playerIndex++;
             if(playerIndex==hangmanPlayers.size()){
@@ -82,41 +95,76 @@ public class HangmanAIGame extends Hangman {
         return true;
     }
 
+    /**
+     * get guess from AI player
+     * @param previousGuesses
+     * @return
+     */
     @Override
     char getGuess(String previousGuesses) {
         System.out.println(previousGuesses);
         return hangmanPlayer.nextGuess();
     }
 
-    public void test1stConstr(){
-        HangmanAIGame hangmanAIGame=new HangmanAIGame();
-        GamesRecord record = hangmanAIGame.playAll();
-        System.out.println(record);
+    /**
+     *
+     * @return a phraseList read from file
+     */
+    @Override
+    public String toString() {
+        return phraseList.toString();
     }
 
-    public void test2ndConstr(){
-        HangmanPlayer player1=new StupidPlayer();
-        HangmanAIGame hangmanAIGame=new HangmanAIGame(player1);
-        GamesRecord record = hangmanAIGame.playAll();
-        System.out.println(record);
+    /**
+     *
+     * @param obj
+     * @return if this and other are both hangman and their phraseList are the same
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(this==obj){
+            return true;
+        }
+        if(obj==null || obj.getClass()!= HangmanAIGame.class){
+            return false;
+        }
+        HangmanAIGame other=(HangmanAIGame) obj;
+        if(phraseList.equals(other.phraseList)){
+            return true;
+        }
+        return false;
     }
 
-    public void test3rdConstr(){
-        HangmanPlayer player1=new StupidPlayer();
+    /**
+     * play game and give feedbacks
+     * @param args
+     */
+    public static void main(String[] args) {
+        HangmanPlayer player1=new RandomPlayer();
         HangmanPlayer player2=new StupidPlayer();
+        HangmanPlayer player3=new AmateurPlayer();
+        HangmanPlayer player4=new RandomPlayer();
         List<HangmanPlayer> players=new ArrayList<>();
         players.add(player1);
         players.add(player2);
+        players.add(player3);
+        players.add(player4);
         HangmanAIGame hangmanAIGame=new HangmanAIGame(players);
         GamesRecord record = hangmanAIGame.playAll();
-        System.out.println(record);
-    }
-
-    public static void main(String[] args) {
-        HangmanPlayer player1=new RandomPlayer();
-        HangmanAIGame hangmanAIGame=new HangmanAIGame(player1);
-        GamesRecord record = hangmanAIGame.playAll();
-        System.out.println(record);
-
+        System.out.println("\n"+record);
+        Set<String> playerIds=new HashSet<>();
+        for(GameInstance gameInstance: record.getGameInstances()){
+            playerIds.add(gameInstance.getPlayer());
+        }
+        System.out.println("Every player's high game list:");
+        for(String Id : playerIds){
+            System.out.println(record.highGameList(Id,3));
+        }
+        float average=record.average();
+        System.out.println("\nTotal Average Score: "+average+"\n");
+        for(String Id : playerIds){
+            float playerAverage=record.average(Id);
+            System.out.println(Id+"'s average score is "+ playerAverage);
+        }
     }
 }
