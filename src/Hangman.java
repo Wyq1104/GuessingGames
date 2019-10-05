@@ -9,12 +9,9 @@ import java.util.Random;
  *Provide methods used by a concrete hangman game
  */
 public abstract class Hangman extends GuessingGame {
-    protected String phrase;
     protected List<String> phraseList;
     protected List<String > changeablePhraseList;
     protected StringBuilder hiddenPhrase;
-    public static int TOTALCHANCES=15;
-    protected String previousGuesses="";
 
     /**
      * change the changeablephraselist which removes guessed phrases
@@ -50,8 +47,8 @@ public abstract class Hangman extends GuessingGame {
     public void randomPhrase(){
         Random random=new Random();
         int i1=random.nextInt(changeablePhraseList.size());
-        this.phrase=changeablePhraseList.get(i1);
-        changeablePhraseList.remove(phrase);
+        this.secret =changeablePhraseList.get(i1);
+        changeablePhraseList.remove(secret);
     }
 
     /**
@@ -59,11 +56,11 @@ public abstract class Hangman extends GuessingGame {
      */
     public void getHiddenPhrase(){
         hiddenPhrase=new StringBuilder();
-        for(int j=0;j<this.phrase.length();j++){
-            if(Character.isLetter(this.phrase.charAt(j))==true){
+        for(int j = 0; j<this.secret.length(); j++){
+            if(Character.isLetter(this.secret.charAt(j))==true){
                 this.hiddenPhrase.append('*');
             }else{
-                this.hiddenPhrase.append(this.phrase.charAt(j));
+                this.hiddenPhrase.append(this.secret.charAt(j));
             }
         }
     }
@@ -72,6 +69,7 @@ public abstract class Hangman extends GuessingGame {
      * Modifies the partially hidden phrase, and modifies the hidden phrase if there is a match
      * @return whether a letter matches
      */
+    @Override
     public boolean processGuess(){
         String lowPhrase=makeLow();
         char guess=getGuess(previousGuesses);
@@ -81,7 +79,7 @@ public abstract class Hangman extends GuessingGame {
             System.out.println("Yes, you are right.");
             for(int i=0;i<lowPhrase.length();i++){
                 if(lowGuess==lowPhrase.charAt(i)) {
-                    this.hiddenPhrase.setCharAt(i, this.phrase.charAt(i));
+                    this.hiddenPhrase.setCharAt(i, this.secret.charAt(i));
                 }
             }
             return true;
@@ -97,8 +95,8 @@ public abstract class Hangman extends GuessingGame {
      */
     private String makeLow(){
         String lowPhrase="";
-        for(int i=0;i<this.phrase.length();i++){
-            lowPhrase+=Character.toLowerCase(phrase.charAt(i));
+        for(int i = 0; i<this.secret.length(); i++){
+            lowPhrase+=Character.toLowerCase(secret.charAt(i));
         }
         return lowPhrase;
     }

@@ -67,7 +67,7 @@ public class HangmanAIGame extends Hangman {
         }
         if(chancesLeft==0){
             System.out.println("Sorry, You lose!!!");
-            System.out.println("The correct answer is: "+phrase);
+            System.out.println("The correct answer is: "+ secret);
             gameInstance.setScore(0);
         }else{
             System.out.println("Congratulation, you win!!!");

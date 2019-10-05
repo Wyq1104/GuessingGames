@@ -18,11 +18,7 @@ public class HangmanUserGame extends Hangman {
      */
     @Override
     public GameInstance play() {
-        GameInstance gameInstance=new GameInstance();
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Please enter your PlayerId");
-        String player=scanner.nextLine();
-        gameInstance.setPlayer(player);
+        GameInstance gameInstance=getUsersId();
         randomPhrase();
         getHiddenPhrase();
         System.out.println(hiddenPhrase);
@@ -41,7 +37,7 @@ public class HangmanUserGame extends Hangman {
         }
         if(chancesLeft==0){
             System.out.println("Sorry, You lose!!!");
-            System.out.println("The correct answer is: "+phrase);
+            System.out.println("The correct answer is: "+ secret);
             gameInstance.setScore(0);
         }else{
             System.out.println("Congratulation, you win!!!");

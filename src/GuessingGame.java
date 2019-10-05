@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 public abstract class GuessingGame extends Game{
-
+    public static final int TOTALCHANCES=10;
+    protected String previousGuesses="";
+    protected String secret;
     /**
      * reusable code for MasterMind and HangmanUserPlayer
      * @return
@@ -20,6 +22,25 @@ public abstract class GuessingGame extends Game{
             return false;
         }
     }
+
+    /**
+     * get user's input id
+     * @return gameinstance
+     */
+    protected GameInstance getUsersId(){
+        GameInstance gameInstance=new GameInstance();
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Please enter your PlayerId");
+        String player=scanner.nextLine();
+        gameInstance.setPlayer(player);
+        return gameInstance;
+    }
+
+    /**
+     *
+     * @return if the guess is correct
+     */
+    public abstract boolean processGuess();
 
 
 

@@ -2,11 +2,8 @@ import java.util.*;
 
 public class MasterMind extends GuessingGame{
     public static final int CODESIZE=4;
-    public static final int TOTALCHANCES=10;
-    private String secret="";
     public static final char[] colorChars=new char[]{'R','G','B','Y','O','P'};
     private Set<Character> characters=new HashSet(Arrays.asList(colorChars));
-    private String previousGuesses;
 
     private void generateSecret(){
         String str="";
@@ -23,11 +20,7 @@ public class MasterMind extends GuessingGame{
     @Override
     public GameInstance play() {
         reset();
-        GameInstance gameInstance=new GameInstance();
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Please enter your PlayerId");
-        String player=scanner.nextLine();
-        gameInstance.setPlayer(player);
+        GameInstance gameInstance=getUsersId();
         System.out.println("Cheating: "+secret);
         int chancesLeft=TOTALCHANCES;
         while(chancesLeft>0){
@@ -98,6 +91,7 @@ public class MasterMind extends GuessingGame{
         return characters.contains(c);
     }
 
+    @Override
     public boolean processGuess(){
         String guess=getGuess();
         StringBuilder secretSB= new StringBuilder(secret);
