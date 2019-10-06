@@ -1,10 +1,28 @@
 import java.util.*;
 
+/**
+ * Provide code essential to the MasterMind game
+ */
 public class MasterMind extends GuessingGame{
     public static final int CODESIZE=4;
     public static final char[] colorChars=new char[]{'R','G','B','Y','O','P'};
-    private Set<Character> characters=new HashSet(Arrays.asList(colorChars));
+    public static final char[] lowerColorChars=new char[]{'r','g','b','y','o','p'};
+    private Set<Character> characters;
 
+    /**
+     * constructor that store characters to Set characters
+     */
+    MasterMind() {
+        characters = new HashSet<>();
+        for (Character character : colorChars) {
+            characters.add(character);
+            characters.add(Character.toLowerCase(character));
+        }
+    }
+
+    /**
+     * generate a secret randomly
+     */
     private void generateSecret(){
         String str="";
         Random random=new Random();
@@ -16,13 +34,17 @@ public class MasterMind extends GuessingGame{
         secret=str;
     }
 
-
+    /**
+     * play a game
+     * @return
+     */
     @Override
     public GameInstance play() {
         reset();
         GameInstance gameInstance=getUsersId();
         System.out.println("Cheating: "+secret);
         int chancesLeft=TOTALCHANCES;
+        System.out.println("Valid Characters representing colors: "+Arrays.toString(colorChars));
         while(chancesLeft>0){
             System.out.println("Chances Left: "+ chancesLeft);
             boolean bool=processGuess();
@@ -39,6 +61,12 @@ public class MasterMind extends GuessingGame{
         return gameInstance;
     }
 
+    /**
+     * find how many characters are correct exactly
+     * @param secretSB
+     * @param guessSB
+     * @return
+     */
     public int checkExacts(StringBuilder secretSB, StringBuilder guessSB){
         int exacts=0;
         for(int i=0;i<secretSB.length();i++){
@@ -50,6 +78,13 @@ public class MasterMind extends GuessingGame{
         }
         return exacts;
     }
+
+    /**
+     * find how many characters are correct partially
+     * @param secretSB
+     * @param guessSB
+     * @return
+     */
     public int checkPartials(StringBuilder secretSB, StringBuilder guessSB) {
         // compare secret to guess
         int i=0;
@@ -70,27 +105,34 @@ public class MasterMind extends GuessingGame{
         return partials;
     }
 
+    /**
+     * check and get user's input
+     * @return
+     */
     public String getGuess(){
-        System.out.println(previousGuesses);
-        Scanner scanner=new Scanner(System.in);
-        String guess="";
-        while(guess.length()!=CODESIZE){
-            System.out.println("Please guess "+CODESIZE+" letters: ");
-            guess=scanner.nextLine();
+        String guess=getReasonableInput(CODESIZE);
+        for(int i=0;i<guess.length();i++){
+            if(!isColor(guess.charAt(i))) {
+                System.out.println("You input a character that does not represent color");
+                return getGuess();
+            }
         }
-//        for(int i=0;i<guess.length();i++){
-//            if(!isColor(guess.charAt(i))) {
-//                System.out.println("You input a character that does not represent color");
-//                return getGuess();
-//            }
-//        }
         return guess;
     }
 
+    /**
+     * check if a character represents color
+     * @param c
+     * @return
+     */
     private boolean isColor(char c){
-        return characters.contains(c);
+        return characters.contains(c) ;
     }
 
+    /**
+     * check if the answer is impeccable
+     * @return
+     */
     @Override
     public boolean processGuess(){
         String guess=getGuess();
@@ -107,15 +149,23 @@ public class MasterMind extends GuessingGame{
         return false;
     }
 
+    /**
+     * reset to play again
+     */
     private void reset(){
         generateSecret();
-        previousGuesses="Previous Results:\n";
+        previousGuesses="";
     }
 
+    /**
+     * run the game
+     * @param args
+     */
     public static void main(String[] args) {
         MasterMind masterMind=new MasterMind();
         GamesRecord gamesRecord=masterMind.playAll();
         System.out.println(gamesRecord);
-
+        System.out.println("High Game List:\n"+gamesRecord.highGameList(5));
+        System.out.println("Average point: "+gamesRecord.average());
     }
 }

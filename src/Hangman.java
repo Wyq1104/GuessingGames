@@ -22,13 +22,6 @@ public abstract class Hangman extends GuessingGame {
     }
 
     /**
-     * play a game
-     * @return gameinstance
-     */
-    @Override
-    public abstract GameInstance play();
-
-    /**
      * get a list of phrases from the file
      * @param filename
      */
@@ -100,12 +93,7 @@ public abstract class Hangman extends GuessingGame {
         }
         return lowPhrase;
     }
-    /**
-     *
-     * @param previousGuesses
-     * @return
-     */
-    abstract char getGuess(String previousGuesses);
+
 
     /**
      *

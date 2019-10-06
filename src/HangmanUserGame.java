@@ -64,16 +64,9 @@ public class HangmanUserGame extends Hangman {
      * @param previousGuesses
      * @return
      */
-    @Override
     char getGuess(String previousGuesses) {
-        System.out.println("Previous guesses: "+previousGuesses);
-        Scanner scanner=new Scanner(System.in);
-        String str1="";
-        while(str1.length()!=1){
-            System.out.println("Please guess a letter: ");
-            str1=scanner.next();
-        }
-        char guess=str1.charAt(0);
+        String guessString=getReasonableInput(1);
+        char guess=guessString.charAt(0);
         if(!Character.isLetter(guess)){
             System.out.println("You don't input a letter");
             return getGuess(previousGuesses);
